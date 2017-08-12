@@ -1,11 +1,11 @@
 var modules = ["file"];
 
-require("patch.js")
+require("./patch.js")
 
 var funcs = {};
 
 var loadModule = function(name) {
-	var obj = require(name+".js");
+	var obj = require("./"+name+".js");
 	for(var k in obj){
 		if(funcs[k]){
 			console.log("error duplicate name of module functions",name);
