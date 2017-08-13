@@ -1,0 +1,27 @@
+{
+  "name": "wltools",
+  "version": "1.0.0",
+  "description": "my toolchain",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/w2moon/wltools.git"
+  },
+  "keywords": [
+    "lovigame"
+  ],
+  "author": "lovigame",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/w2moon/wltools/issues"
+  },
+  "homepage": "https://github.com/w2moon/wltools#readme",
+  "devDependencies": {
+    "@types/node": "^8.0.20",
+    "mocha": "^3.5.0",
+    "ts-node": "^3.3.0"
+  }
+}
