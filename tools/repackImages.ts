@@ -23,7 +23,7 @@ interface FileInfo{
 interface FileCollection{
 
     /** 集合 */
-    files:Array<FileInfo>,
+    [index:number]:FileInfo,
 };
 
 
