@@ -2,6 +2,7 @@ var fs = require("fs");
 var path = require("path");
 var bufferCls = require('buffer')
 var crypto = require('crypto');
+var archiver = require('archiver');
 //loop all subfolder files, callback with fileFullPath
 function forEachFile(pathToFind,callback){
         if(!fs.existsSync(pathToFind)){
@@ -195,6 +196,42 @@ function md5(file){
     return md5sum.digest('hex').toUpperCase();
 };
 
+var ignoreFolder = [
+    ".svn",
+    ".git",
+    "node_modules",
+    ".vscode",
+];
+function needIgnore(file){
+    for(var i=0;i<ignoreFolder.length;++i){
+    if(file.indexOf(ignoreFolder[i]) != -1){
+        return true;
+    }
+
+    }
+    return false;
+}
+
+function zip(folder){
+    var zipFile = path.resolve(path.basename(folder)+".zip");
+    if(!folder.endsWith("/")){
+        folder += "/";
+    }
+    
+    var output = fs.createWriteStream(zipFile);
+    var archive = archiver('zip', {zlib: { level: 9 }});
+    archive.pipe(output);
+
+    forEachFile(folder,function(file){
+        if(needIgnore(file)){
+            return;
+        }
+        var zipName = file.replace(folder,"");
+        archive.file(file, { name: zipName });
+    });
+    archive.finalize();
+};
+
 module.exports = {
     //遍历文件夹下所有文件，对每个文件调用callback
 	//loop all subfolder files, callback with fileFullPath
@@ -216,4 +253,6 @@ module.exports = {
     md5:md5,
     
     removeFolders:removeFolders,
+
+    zip:zip
 };
