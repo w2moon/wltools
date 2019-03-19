@@ -167,4 +167,4 @@ function start(name){
     });
 }
 
- start("七界传说");
+ start("太初");
