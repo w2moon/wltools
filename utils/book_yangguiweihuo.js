@@ -8,7 +8,8 @@ var fs = require("fs");
 var wl = require("./file");
 var ec = require('encoding_convertor');
 var iconv = require('iconv-lite');
-var urlHead = "https://www.yangguiweihuo.com";
+// var urlHead = "https://www.yangguiweihuo.com";
+var urlHead = "https://www.biquge.cc/html/457/457697/";
 function biqugeSearch(name, cb) {
     let encodeName = encodeURIComponent(name);
     let url = urlHead+`/s.php?ie=gbk&q=${encodeName}`;
@@ -58,10 +59,10 @@ function qj2bj(str){
 let idx = 0;
 let wait = [];
 function biqugePage(url, cb) {
-    wait.push(()=>{
+    // wait.push(()=>{
         request(url,{encoding:null}, function (error, response, body) {
             if (response && response.statusCode == 200) {
-                let txt = iconv.decode(body,'GBK');
+                let txt = body;//iconv.decode(body,'GBK');
                 let $ = cheerio.load(txt);
                 let content = $('div #content');
                 let children = content[0].children;
@@ -102,9 +103,9 @@ function biqugePage(url, cb) {
                 
                 biqugePage(url,cb);
             }
-            setTimeout(nextWait,1000+Math.random()*1000);
+            setTimeout(nextWait,1);//0+Math.random()*10);
         });
-    });
+    // });
        
 }
 
@@ -120,7 +121,7 @@ function biqugeDownload(url, saveDir, cb) {
     wl.createFolders(saveDir);
     request(url,{encoding:null}, function (error, response, body) {
         if (response && response.statusCode == 200) {
-            let txt = iconv.decode(body,'GBK');
+            let txt = body;//iconv.decode(body,'GBK');
             let $ = cheerio.load(txt);
             let nameStart = 10000;
             let num = $('dd a').length;
@@ -143,7 +144,8 @@ function biqugeDownload(url, saveDir, cb) {
                 // name = name.replace("*","");
                 // name = name.replace("*","");
                 // name = name.replace("**","");
-                let fileName = saveDir+"/"+(nameStart+parseInt(idx))+sanitize(name)+".txt";
+                let fileName = saveDir+"/"+(nameStart+parseInt(idx))+name+".txt";
+                // let fileName = saveDir+"/"+(nameStart+parseInt(idx))+sanitize(name)+".txt";
                 if(fs.existsSync(fileName)){
                     testFinish();
                     return;
@@ -179,14 +181,15 @@ function packTxt(dir,outFile){
 
 function start(name){
     let outDir = "./books/"+name;
-    biqugeSearch(name,function(books){
+    // biqugeSearch(name,function(books){
         // if(books[0].title != name){
         //     console.log("没找到");
         //     return;
         // }
         console.log("开始下载");
        // var url = books[0].url;
-        var url = "https://www.yangguiweihuo.com/35/35260/";
+        // var url = "https://www.yangguiweihuo.com/14/14539";
+        var url = urlHead;
         
          biqugeDownload(url, outDir, function (cur, total) {
             packTxt(outDir,outDir+".txt");
@@ -194,7 +197,7 @@ function start(name){
          });
          
         
-    });
+    // });
 }
 
- start("全球高武");
+ start("听说我死后超凶的");

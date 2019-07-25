@@ -167,4 +167,4 @@ function start(name){
     });
 }
 
- start("太初");
+ start("伏天氏");

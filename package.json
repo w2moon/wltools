@@ -25,6 +25,7 @@
     "ts-node": "^3.3.0"
   },
   "dependencies": {
+    "archiver": "^3.0.0",
     "cheerio": "^1.0.0-rc.2",
     "encoding_convertor": "^0.2.1",
     "iconv-jschardet": "^1.0.7",

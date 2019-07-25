@@ -9,7 +9,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}\\utils/testCheer.js"
+            "program": "${workspaceFolder}/utils/book_yangguiweihuo.js"
         }
     ]
 }
