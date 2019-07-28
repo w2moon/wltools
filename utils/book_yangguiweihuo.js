@@ -9,7 +9,7 @@ var wl = require("./file");
 var ec = require('encoding_convertor');
 var iconv = require('iconv-lite');
 // var urlHead = "https://www.yangguiweihuo.com";
-var urlHead = "https://www.biquge.cc/html/457/457697/";
+var urlHead = "https://www.biquge.cc/html/494/494749/";
 function biqugeSearch(name, cb) {
     let encodeName = encodeURIComponent(name);
     let url = urlHead+`/s.php?ie=gbk&q=${encodeName}`;
@@ -138,7 +138,7 @@ function biqugeDownload(url, saveDir, cb) {
             $('dd a').each((idx, elem) => {
                 
                 paged = true;
-                let name = $(elem).text();
+                let name = $(elem).text().replace(" ","_").replace("/","_");
                 let page = urlHead + $(elem).attr("href");
                 // name = name.replace("?","");
                 // name = name.replace("*","");
@@ -200,4 +200,4 @@ function start(name){
     // });
 }
 
- start("听说我死后超凶的");
+ start("穹顶之上");
