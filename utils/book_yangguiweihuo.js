@@ -9,7 +9,7 @@ var wl = require("./file");
 var ec = require('encoding_convertor');
 var iconv = require('iconv-lite');
 // var urlHead = "https://www.yangguiweihuo.com";
-var urlHead = "https://www.biquge.cc/html/494/494749/";
+var urlHead = "https://www.gu.la/html/140/140872/";
 function biqugeSearch(name, cb) {
     let encodeName = encodeURIComponent(name);
     let url = urlHead+`/s.php?ie=gbk&q=${encodeName}`;
@@ -59,8 +59,8 @@ function qj2bj(str){
 let idx = 0;
 let wait = [];
 function biqugePage(url, cb) {
-    // wait.push(()=>{
-        request(url,{encoding:null}, function (error, response, body) {
+    wait.push(()=>{
+        request(url,{encoding:null,timeout:5000}, function (error, response, body) {
             if (response && response.statusCode == 200) {
                 let txt = body;//iconv.decode(body,'GBK');
                 let $ = cheerio.load(txt);
@@ -92,7 +92,7 @@ function biqugePage(url, cb) {
             }
             else{
                 if(error){
-                    console.log("error",error);
+                    // console.log("error",error);
                 }
                 else if(response){
                     console.log("ss",response.statusCode,url);
@@ -104,8 +104,12 @@ function biqugePage(url, cb) {
                 biqugePage(url,cb);
             }
             setTimeout(nextWait,1);//0+Math.random()*10);
-        });
-    // });
+        }).on("error",(e)=>{
+            // console.log(url+"eee2"+e);
+        }).on("complete",()=>{
+            console.log(url+"all finished");
+        });;
+    });
        
 }
 
@@ -119,7 +123,9 @@ function nextWait(){
 
 function biqugeDownload(url, saveDir, cb) {
     wl.createFolders(saveDir);
-    request(url,{encoding:null}, function (error, response, body) {
+    console.log("start req");
+    request(url,{encoding:null,timeout:5000}, function (error, response, body) {
+        console.log(url);
         if (response && response.statusCode == 200) {
             let txt = body;//iconv.decode(body,'GBK');
             let $ = cheerio.load(txt);
@@ -151,6 +157,7 @@ function biqugeDownload(url, saveDir, cb) {
                     return;
                 }
                 searchStarted++;
+                // console.log(page)
                 
                 biqugePage(page, (text) => {
                     
@@ -163,7 +170,13 @@ function biqugeDownload(url, saveDir, cb) {
             });
             nextWait();
         }
+    }).on("error",(e)=>{
+        console.log("eee"+e);
+        biqugeDownload(url,saveDir,cb);
+    }).on("complete",()=>{
+        console.log("all finished");
     });
+    
 }
 
 
@@ -200,4 +213,4 @@ function start(name){
     // });
 }
 
- start("穹顶之上");
+ start("修真四万年");
